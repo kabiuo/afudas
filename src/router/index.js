@@ -1,18 +1,26 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import Index from "@/index/Index.vue";
 import Sign from "@/sign/Sign.vue";
+import Customer from "@/components/customer/Customer.vue";
 
 const createHistory = createWebHistory();
 
 const routes = [
     {
         path: '/',
-        name: Index,
-        component: Index
+        name: 'index',
+        component: Index,
+        children: [
+            {
+                path: '/customer',
+                name: 'customer',
+                component: Customer,
+            },
+        ]
     },
     {
         path: '/sign',
-        name: Sign,
+        name: 'sign',
         component: Sign
     },
     /*{
