@@ -64,13 +64,13 @@
                                     <template #overlay>
                                         <a-menu>
                                             <a-menu-item>
-                                                <a href="javascript:;" @click="tosign">登录</a>
+                                                <a href="javascript:" @click="tosign">登录</a>
                                             </a-menu-item>
                                             <a-menu-item>
-                                                <a href="javascript:;">2nd menu item</a>
+                                                <a href="javascript:">2nd menu item</a>
                                             </a-menu-item>
                                             <a-menu-item>
-                                                <a href="javascript:;">3rd menu item</a>
+                                                <a href="javascript:">3rd menu item</a>
                                             </a-menu-item>
                                         </a-menu>
                                     </template>
