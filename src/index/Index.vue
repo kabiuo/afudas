@@ -6,17 +6,17 @@
                             collapsed-width="0">
                 <div class="logo"/>
                 <a-menu v-model:selectedKeys="selectedKeys" v-model:openKeys="openKeys" theme="dark" mode="inline">
-                    <a-menu-item key="/">
-                        <router-link to="/" tag="div">
+                    <a-menu-item key="/home">
+                        <router-link to="/home" tag="div">
                             <video-camera-outlined/>
-                            <span>nav 1</span>
+                            <span>Home</span>
                         </router-link>
                     </a-menu-item>
                     <a-sub-menu key="customer">
                         <template #title>
                         <span>
                           <user-outlined/>
-                          <span>User</span>
+                          <span>Customer</span>
                         </span>
                         </template>
                         <a-menu-item key="/customer">
@@ -79,7 +79,7 @@
                         </a-col>
                     </a-row>
                 </a-layout-header>
-                <a-layout-content :style="{ margin: '12px 12px'}">
+                <a-layout-content :style="{ margin: '12px 12px', minHeight: '590px'}">
                     <router-view></router-view>
                 </a-layout-content>
                 <a-layout-footer style="text-align: center">
@@ -138,7 +138,7 @@ export default defineComponent({
 </script>
 <style lang="scss">
 .layout {
-  height: 100vh;
+    //height: 100vh;
 
   .trigger {
     font-size: 18px;

@@ -1,51 +1,84 @@
 <template xmlns="http://www.w3.org/1999/html">
     <a-card :bordered="true">
-        <div class="components-form">
-            <a-form
-                    ref="formRef"
-                    name="advanced_search"
-                    class="ant-advanced-search-form"
-                    :model="formState"
-                    @finish="onFinish"
-            >
-                <a-row :gutter="24">
-                    <template v-for="i in 10" :key="i">
-                        <a-col v-show="expand || i <= 6" :span="8">
-                            <a-form-item
-                                    :name="`field-${i}`"
-                                    :label="`field-${i}`"
-                                    :rules="[{ required: true, message: 'input something' }]"
-                            >
-                                <a-input v-model:value="formState[`field-${i}`]" placeholder="placeholder"></a-input>
-                            </a-form-item>
-                        </a-col>
-                    </template>
-                </a-row>
-                <a-row>
-                    <a-col :span="24" style="text-align: right">
-                        <a-button type="primary" html-type="submit">Search</a-button>
-                        <a-button style="margin: 0 8px" @click="() => formRef.resetFields()">Clear</a-button>
-                        <a style="font-size: 12px" @click="expand = !expand">
-                            <template v-if="expand">
-                                <UpOutlined/>
-                            </template>
-                            <template v-else>
-                                <DownOutlined/>
-                            </template>
-                            Collapse
-                        </a>
-                    </a-col>
-                </a-row>
-            </a-form>
-        </div>
-        <br/>
-        <a-table :columns="columns" :data-source="data" :scroll="{ x: 1500, y: 300 }">
-            <template #bodyCell="{ column }">
-                <template v-if="column.key === 'operation'">
-                    <a>action</a>
+        <el-form>
+            <el-row :gutter="20">
+                <el-col :xs="4" :sm="6" :md="8" :lg="8" :xl="11">
+                    <el-form-item label="Activity name">
+                        <el-input/>
+                    </el-form-item>
+                </el-col>
+                <el-col :xs="4" :sm="6" :md="8" :lg="8" :xl="11">
+                    <el-form-item label="Activity name">
+                        <el-input/>
+                    </el-form-item>
+                </el-col>
+                <el-col :xs="4" :sm="6" :md="8" :lg="8" :xl="11">
+                    <el-form-item label="Activity name">
+                        <el-input/>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20">
+                <el-col :xs="4" :sm="6" :md="8" :lg="8" :xl="11">
+                    <el-form-item label="Activity name">
+                        <el-input/>
+                    </el-form-item>
+                </el-col>
+                <el-col :xs="4" :sm="6" :md="8" :lg="8" :xl="11">
+                    <el-form-item label="Activity name">
+                        <el-input/>
+                    </el-form-item>
+                </el-col>
+                <el-col :xs="4" :sm="6" :md="8" :lg="8" :xl="11">
+                    <el-form-item label="Activity name">
+                        <el-input/>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20">
+                <el-col :xs="4" :sm="6" :md="8" :lg="8" :xl="11">
+                    <el-form-item label="Activity name">
+                        <el-input/>
+                    </el-form-item>
+                </el-col>
+                <el-col :xs="4" :sm="6" :md="8" :lg="8" :xl="11">
+                    <el-form-item>
+                        <el-button type="primary" @click="">Query</el-button>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+        </el-form>
+        <el-table :data="tableData" height="337" stripe style="width: 100%">
+            <el-table-column fixed prop="sysCustomerId" label="#" width="150"/>
+            <el-table-column prop="sysCustomerName" label="Name" width="120"/>
+            <el-table-column prop="sysCustomerSex" label="CustomerSex" width="120"/>
+            <el-table-column prop="sysCustomerAddress" label="Address" width="220"/>
+            <el-table-column prop="sysCustomerIdcardNumber" label="IdcardNumber" width="120"/>
+            <el-table-column prop="sysCustomerIdentityType" label="IdentityType" width="120"/>
+            <el-table-column prop="sysCustomerPhone" label="CustomerPhone" width="130"/>
+            <el-table-column prop="sysCustomerCreateTime" label="CreateTime" width="120"/>
+            <el-table-column prop="sysCustomerUpdateTime" label="UpdateTime" width="120"/>
+            <el-table-column fixed="right" label="Operations" width="120">
+                <template #default>
+                    <el-button link type="primary" size="small" @click="">Detail</el-button>
+                    <el-button link type="primary" size="small">Edit</el-button>
                 </template>
-            </template>
-        </a-table>
+            </el-table-column>
+            <el-empty description="description"/>
+        </el-table>
+        <br>
+        <el-pagination
+            style="justify-content: center;"
+            v-model:current-page="currentPage"
+            v-model:page-size="pageSize"
+            background
+            :page-sizes="[10, 20, 30]"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="pageTotal"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+        />
+
 
     </a-card>
 </template>
@@ -53,126 +86,57 @@
 <script>
 import {defineComponent, reactive, ref} from 'vue';
 import {DownOutlined, UpOutlined} from '@ant-design/icons-vue';
-
-const columns = [{
-    title: 'Full Name',
-    width: 100,
-    dataIndex: 'name',
-    key: 'name',
-    fixed: 'left',
-}, {
-    title: 'Age',
-    width: 100,
-    dataIndex: 'age',
-    key: 'age',
-    fixed: 'left',
-}, {
-    title: 'Column 1',
-    dataIndex: 'address',
-    key: '1',
-    width: 150,
-}, {
-    title: 'Column 2',
-    dataIndex: 'address',
-    key: '2',
-    width: 150,
-}, {
-    title: 'Column 3',
-    dataIndex: 'address',
-    key: '3',
-    width: 150,
-}, {
-    title: 'Column 4',
-    dataIndex: 'address',
-    key: '4',
-    width: 150,
-}, {
-    title: 'Column 5',
-    dataIndex: 'address',
-    key: '5',
-    width: 150,
-}, {
-    title: 'Column 6',
-    dataIndex: 'address',
-    key: '6',
-    width: 150,
-}, {
-    title: 'Column 7',
-    dataIndex: 'address',
-    key: '7',
-    width: 150,
-}, {
-    title: 'Column 8',
-    dataIndex: 'address',
-    key: '8',
-}, {
-    title: 'Action',
-    key: 'operation',
-    fixed: 'right',
-    width: 100,
-}];
-
-const data = [];
-
-for (let i = 0; i < 100; i++) {
-    data.push({
-        key: i,
-        name: `Edrward ${i}`,
-        age: 32,
-        address: `London Park no. ${i}`,
-    });
-}
+import axios from "axios";
 
 export default defineComponent({
     name: "Customer",
-    components: {
-        DownOutlined,
-        UpOutlined,
-    },
-    setup() {
-        const expand = ref(false);
-        const formRef = ref();
-        const formState = reactive({});
-        const onFinish = values => {
-            console.log('Received values of form: ', values);
-            console.log('formState: ', formState);
-        };
+    components: {},
+    data() {
         return {
-            formRef,
-            formState,
-            expand,
-            onFinish,
-            data,
-            columns,
+            tableData: [],
+            currentPage: 1,
+            pageSize: 10,
+            pageTotal: 0,
         };
+    },
+    created() {
+        this.getAllCustomUser();
+    },
+    methods: {
+        getAllCustomUser() {
+            let _this = this;
+            axios({
+                method: 'get',
+                url: '/customer/customer-user/getallcustomer/' + _this.currentPage + '/' + _this.pageSize,
+            })
+                .then(function (response) {
+                    if (_this.tableData === null && response.data.length >= 2) {
+                        _this.tableData = null;
+                        _this.tableData = response.data[0];
+                        _this.pageTotal = response.data[1];
+                    } else {
+                        _this.tableData = null;
+                        _this.getAllCustomUser();
+                    }
+                });
+        },
+
+        handleSizeChange(val) {
+            this.pageSize = val;
+            this.tableData = null;
+            this.getAllCustomUser();
+        },
+
+        handleCurrentChange(val) {
+            this.currentPage = val;
+            this.tableData = null;
+            this.getAllCustomUser();
+        }
+
     },
 });
 </script>
 
-<style lang="scss" scoped>
-.components-form .ant-form {
-  max-width: none;
-}
+<style lang="scss">
 
-.components-form .search-result-list {
-  margin-top: 16px;
-  border: 1px dashed #e9e9e9;
-  border-radius: 2px;
-  background-color: #fafafa;
-  min-height: 200px;
-  text-align: center;
-  padding-top: 80px;
-}
-
-[data-theme='dark'] .ant-advanced-search-form {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid #434343;
-  padding: 24px;
-  border-radius: 2px;
-}
-
-[data-theme='dark'] .components-form .search-result-list {
-  border: 1px dashed #434343;
-  background: rgba(255, 255, 255, 0.04);
-}
 </style>

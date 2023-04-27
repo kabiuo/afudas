@@ -2,6 +2,7 @@ import {createRouter, createWebHistory} from 'vue-router'
 import Index from "@/index/Index.vue";
 import Sign from "@/sign/Sign.vue";
 import Customer from "@/components/customer/Customer.vue";
+import Home from "@/components/home/Home.vue";
 
 const createHistory = createWebHistory();
 
@@ -10,7 +11,13 @@ const routes = [
         path: '/',
         name: 'index',
         component: Index,
+        redirect: 'home',
         children: [
+            {
+                path: '/home',
+                name: 'home',
+                component: Home,
+            },
             {
                 path: '/customer',
                 name: 'customer',
